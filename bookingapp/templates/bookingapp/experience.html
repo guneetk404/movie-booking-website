@@ -1,0 +1,76 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block link4 %}active{% endblock link4 %}
+{% block body %}
+<!---  Hero image  -->
+<div style="background-color: #141414;">
+    <section class="hero">
+        <div class="content">
+            <h2>Food & Drinks</h2>
+            <p>Transform your cinema experience into a cheerful dining, our wide selection of made-for-cinema hot
+                meals. Treat yourself to nachos, hot dogs or chicken strips or share popcorn and chocolate-covered
+                treats.
+            </p>
+        </div>
+    </section>
+    <!---  Hero image end -->
+
+    <!-- Image card section -->
+    <section class="cinema">
+        <h1>Viewing Experience</h1>
+
+        <div class="row">
+            <div class="col">
+                <img src="{% static 'bookingapp/images/cinema1.jpg' %}" alt="image" class="imgfit">
+                <h2>Mega Cinema</h2>
+                <p>We offer Fully-reclining, extra-wide seats, ample legroom and pillowy-soft head and foot rests.
+                    So our customer can experience a pleasant movie view experince.
+
+                </p>
+            </div>
+            <div class="col">
+                <img src="{% static 'bookingapp/images/iSense.jpg' %}" alt="image" class="imgfit">
+                <h2>iSense</h2>
+                <p>When you want your film to be a special occasion, choose an iSense cinema. Even bigger screens,
+                    brighter visuals and double the number of speakers.
+                </p>
+            </div>
+            <div class="col">
+                <img src="{% static 'bookingapp/images/imax.jpg' %}" alt="image" class="imgfit">
+                <h2>IMAX</h2>
+                <p>Experience film on an epic scale. Crystal-clear images, earth-shaking surround sound and
+                    high-resolution screens so big the film seems to surround you.
+                </p>
+            </div>
+        </div>
+        <hr class="line">
+        <br><br>
+        <div class="row">
+            <div class="col">
+                <img src="{% static 'bookingapp/images/seats.jpg' %}" alt="image" class="imgfit">
+                <h2>Recliner Seats</h2>
+                <p> We offer Fully-reclining, extra-wide seats, ample legroom and pillowy-soft head and foot rests.
+                    So our customer can experience a pleasant movie view experince.
+                </p>
+            </div>
+            <div class="col">
+                <img src="{% static 'bookingapp/images/nachos.jpg' %}" alt="image" class="imgfit">
+                <h2>Hot food</h2>
+                <p>Treat yourself to nachos,
+                    hot dogs or chicken strips or share popcorn and chocolate-covered treats
+                </p>
+            </div>
+            <div class="col">
+                <img src="{% static 'bookingapp/images/popcorn.jpg' %}" alt="image" class="imgfit">
+                <h2>Drinks</h2>
+                <p>All your favourite drinks are served chill at the cinema.
+                    so you can seat back and fullfill the thirst.
+                </p>
+            </div>
+        </div>
+        <hr class="line">
+        <br><br>
+    </section>
+</div>
+<!-- Image card section end -->
+{% endblock body %}

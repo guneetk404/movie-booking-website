@@ -1,0 +1,58 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block link3 %}active{% endblock link3 %}
+{% block headstyle %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- mdb => b5-->
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+<!-- MDB -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet" />
+{% endblock headstyle %}
+{% block body %}
+
+
+<div class="login_page">
+    <form action="/signup/" method="POST">
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
+        {% endif %}
+        {% csrf_token %}
+        <center>
+            <h1 class="mb-6">Signup Here</h1>
+        </center>
+        <!-- Email input -->
+        <div class="mb-4">
+            <label class="" for="form2Example1">Email address</label>
+            <input type="email" name="email" id="form2Example1" class="form-control" />
+        </div>
+
+        <!-- Password input -->
+        <div class="mb-4">
+            <label class="" for="form2Example2">Password</label>
+            <input type="password" name="password" id="form2Example2" class="form-control" />
+        </div>
+
+        <!-- Password input -->
+        <div class="mb-4">
+            <label class="" for="form2Example2">Confirm Password</label>
+            <input type="password" name="password2" id="form2Example2" class="form-control" />
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Sign Up</button>
+
+        <!-- Register buttons -->
+        <div class="text-center">
+            <p>Already a member? <a href="/login">Login</a></p>
+        </div>
+    </form>
+</div>
+
+{% endblock body %}

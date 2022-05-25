@@ -1,0 +1,123 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block link2 %}active{% endblock link2 %}
+{% block body %}
+
+<div style="background-color: #141414;">
+    <section class="about_main">
+        <div class="col_container">
+            <div class="col ">
+                <div class="wrapper faq">
+                    <h2 class="title">FAQ</h2>
+                    <div class="wrap-1">
+                        <input type="radio" id="tab-1" name="tabs">
+                        <label for="tab-1">
+                            <div>Can we bring food to the cinema from outside?</div>
+                            <div class="cross"></div>
+                        </label>
+                        <div class="content">Unfortunetly, we do not allow food from oustide.
+                            However, we do have a canteen for our customers"
+                        </div>
+                    </div>
+
+                    <div class="wrap-2">
+                        <input type="radio" id="tab-2" name="tabs">
+                        <label for="tab-2">
+                            <div>Can you get a refund on tickets?</div>
+                            <div class="cross"></div>
+                        </label>
+                        <div class="content">Unfortunetly, we do not provide refunds of tickets as of now.
+                        </div>
+                    </div>
+
+                    <div class="wrap-3">
+                        <input type="radio" id="tab-3" name="tabs">
+                        <label for="tab-3">
+                            <div>Can tickets be bought online using this website?</div>
+                            <div class="cross"></div>
+                        </label>
+                        <div class="content">Our IT support team are currently working on a booking system
+                            but as of now tickets can be bought in the cinema only.
+                        </div>
+                    </div>
+
+                    <div class="wrap-4">
+                        <input type="radio" id="tab-4" name="tabs">
+                        <label for="tab-4">
+                            <div>What sort of payemnt methods do we accept?</div>
+                            <div class="cross"></div>
+                        </label>
+                        <div class="content">We accept cash, card and contless payments including Apple pay, Google pay.
+                        </div>
+                    </div>
+
+                    <div class="wrap-5">
+                        <input type="radio" id="tab-5" name="tabs">
+                        <label for="tab-5">
+                            <div>Up to what age can I buy a child ticket? </div>
+                            <div class="cross"></div>
+                        </label>
+                        <div class="content">Children up to and including the age of 14 can be admitted with a child
+                            ticket.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <img src="{% static 'bookingapp/images/pic1.svg' %}" alt="pic" id="main__img" class="imgfit" />
+            </div>
+        </div>
+    </section>
+    <!-- FAQs section end  -->
+
+    <!-- Contact form start -->
+    <section class="contactform">
+        <div class="content">
+            <h1>How to find us </h1>
+        </div>
+        <div class="colcontainer">
+            <div class="col">
+                <div class="contctsection">
+                    <div class="card_container">
+                        <div class="card">
+                            <i class="fa fa-home"></i>
+                            <p>XZY Road, Leicester , LE5 XYZ</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa fa-phone"></i>
+                            <p>+447424699663</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa fa-envelope-o"></i>
+                            <p>PranavHasmukhbhai@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <form action="/about/" method='POST'>
+                    {% csrf_token %}
+                    <div class="inputBox">
+                        <input type="text" placeholder="First Name" name="fname" required="">
+                        <input type="text" placeholder="Last Name" name='lname' required="">
+                    </div>
+                    <div class="inputBox">
+                        <input type="number" placeholder="Phone" name='phone' required="">
+                        <input type="email" placeholder="Email" name='email' required="">
+                    </div>
+                    <div class="inputBox">
+                        <select id="options" name="query">
+                            <option value="select query">Select query</option>
+                            <option value="refunds">Refunds</option>
+                            <option value="cancel ticket">Cancel Ticket</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <textarea placeholder="Message" name="desc" id="" cols="30" rows="10"></textarea>
+                    <input type="submit" class="main__btn" value="Send Message">
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock body %}

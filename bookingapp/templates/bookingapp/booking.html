@@ -1,0 +1,109 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block headstyle %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- mdb => b5-->
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+<!-- MDB -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet" />
+
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<!-- bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+{% endblock headstyle %}
+{% block body %}
+
+<div style="background-color: #fff;">
+
+    <div class="cinema_list">
+        <!-- Background image -->
+        <div class="p-5 text-center text-white">
+            <h2 class="my-2">MY BOOKINGS</h2>
+        </div>
+        {% if bookings %}
+        <ul class="list my-bookings col-10 mx-auto">
+            {% for booking in bookings %}
+            <li>
+                <div class="dtl text-white">
+                    <div class="row"><b><span id="list_{{booking.id}}_cinema_name" class="text-decoration-underline">{{booking.cname}}</b></span></div>
+                    <span class="addr" id="list_1_cinema_address">{{booking.caddress}}</span>
+                    <span class="text-white mt-2" id=""><span class="text-success">Booking No: </span>{{booking.bookingno}}</span>
+                    <span class="text-white" id=""><span class="text-success">Movie: </span>{{booking.title}}</span>
+                    <span class="text-white" id=""><span class="text-success">Date: </span>{{booking.date}}</span>
+                    <span class="text-white" id=""><span class="text-success">Seats: </span>
+                        {% for seat in seats %}
+                            {% if seat.booking.id == booking.id %}
+                            {{seat.seat.seatno}},
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <span class="text-white" id=""><span class="text-success">Price: </span>£{{booking.cfare}}</span>
+                    <span class="text-white" id="">
+                        <spna class="text-success">Tickets: </spna>{{booking.totalseats}}
+                    </span>
+                    <span class="text-white mb-2" id=""><span class="text-success">Total Price: </span>£{{booking.totalfare}}</span>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="p-5 text-center text-white">
+            <h2 class="my-2">No Bookings</h2>
+        </div>
+        {% endif %}
+    </div>
+    <nav aria-label="Page navigation example" class="pagination-style">
+        <ul class="pagination justify-content-center">
+            {% if bookings.has_previous %}
+            <li class="page-item first">
+                <a class="page-link " href="?page=1" tabindex="-1" aria-disabled="true">First</a>
+            </li>
+            <li class="page-item first">
+                <a class="page-link" href="?page={{ bookings.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled first">
+                <a class="page-link" tabindex="-1" aria-disabled="true">First</a>
+            </li>
+            <li class="page-item disabled first">
+                <a class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            <li class="page-item"><a class="page-link"><span class="current">
+                        Page {{ bookings.number }} of {{ bookings.paginator.num_pages }}.
+                    </span></a></li>
+            {% if bookings.has_next %}
+            <li class="page-item last">
+                <a class="page-link" href="?page={{ bookings.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item last">
+                <a class="page-link " href="?page={{ bookings.paginator.num_pages }}">Last</a>
+            </li>
+            {% else %}
+            <li class="page-item last disabled">
+                <a class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item last disabled">
+                <a class="page-link">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% endblock body %}

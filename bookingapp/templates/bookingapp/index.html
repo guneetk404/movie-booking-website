@@ -1,0 +1,41 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block link1 %}active{% endblock link1 %}
+{% block body %}
+
+<!---  main Section -->
+<div class="main">
+    <div class="main__container">
+        <div class="main__content">
+            <h1>BREATHTAKING</h1>
+            <h2>EXPERIENCE</h2>
+            <p>With Our Crystal-clear images,
+                earth-shaking surround sound
+                and high-resolution screens,so big the film seems to surround you.</p>
+            <button class="main__btn"><a href="/">Membership</a></button>
+        </div>
+        <div class="main__img--container">
+            <img src="{% static 'bookingapp/images/pic1.svg' %}" alt="pic" id="main__img" />
+        </div>
+    </div>
+</div>
+<!-- Main section ends -->
+
+<!--- top films -->
+<div class="topFilms">
+    <h1>Top Films</h1>
+    {% if movies %}
+    <div class="topFilms__container">
+        {% for movie in movies %}
+        <div class="topFilms__card" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%,
+        rgba(17, 17, 17, 0.6) 100%), url('/media/{{movie.image}}')">
+            <h2>{{movie.title}}</h2>
+            <button> <a href="/movie_detail/{{movie.id}}">Book Now</a></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+<!-- top films end -->
+
+{% endblock body %}

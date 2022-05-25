@@ -1,0 +1,159 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block link3 %}active{% endblock link3 %}
+{% block headstyle %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- mdb => b5-->
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+<!-- MDB -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css" rel="stylesheet" />
+
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<!-- bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+{% endblock headstyle %}
+{% block body %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><span id="div_cinema_name"></span> | <span
+                        id="div_cinema_price"></span>
+                    <p id="div_cinema_address"></p>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/checkout/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="cinema" id="input_cinema">
+                <input type="hidden" name="movie" id="movie_id" value="{{movie.id}}">
+                <div class="modal-body">
+                    <div class="form-floating" id="floatwait">
+                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                            multiple aria-label="multiple select example" style="height:400px" name='seats'>
+                            <option value="A1">hello</option>
+                            <option value="A1">hello</option>
+                            <option value="A1">hello</option>
+                            <option value="A1">hello</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Proceed</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="cinema_list">
+    <!-- Background image -->
+    <div class="p-5 text-center bg-image">
+        <h2 class="my-2">{{movie.title}}</h2>
+        <!-- <h5 class="my-2"><i class="fa fa-heart text-danger"></i> 69% 1.7K ratings</h5> -->
+        <h5 class="my-2">{{movie.duration}} • {{movie.type}} • {{movie.release}}</h5>
+    </div>
+
+    <ul class="list col-10 mx-auto">
+        {% if cinemas %}
+        {% for cinema in cinemas %}
+        <li>
+            <div class="dtl text-white">
+                <div class="row"><b><span id="list_{{cinema.id}}_cinema_name">{{cinema.name}}</b></span></div>
+                <span class="addr" id="list_{{cinema.id}}_cinema_address">{{cinema.address}}</span>
+                <span class="text-white my-2" id="list_{{cinema.id}}_cinema_price">Price: £{{cinema.fare}}</span>
+            </div>
+            <div class="timing mx-3 mb-4">
+                <div class="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button class="btn btn-success" onclick="setDataToForm('{{cinema.id}}')">Book Now</button>
+                    <!-- <small><small class="text-black">$60 UK</small></small> -->
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        {% endif %}
+    </ul>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 7,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+
+    function setDataToForm(id) {
+        var cinema_name = document.getElementById("list_" + id + "_cinema_name").innerText
+        var cinema_address = document.getElementById("list_" + id + "_cinema_address").innerText
+        var cinema_price = document.getElementById("list_" + id + "_cinema_price").innerText
+        document.getElementById("div_cinema_name").innerText = cinema_name
+        document.getElementById("div_cinema_address").innerText = cinema_address
+        document.getElementById("input_cinema").value = id
+        document.getElementById("div_cinema_price").innerText = cinema_price
+        $('#floatwait').empty()
+        $('#floatwait').append(` <i class="fa fa-spinner fa-spin"></i>Loading`)
+        var formdata = {
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            'cinema': $('input[name=cinema]').val(),
+            'movie': $('input[name=movie]').val(),
+        };
+        $.ajax({
+                type: "POST",
+                url: '/seat_availability/',
+                data: formdata,
+                encode: true
+            })
+            .done(function (data) {
+                $('#floatwait').empty()
+                $('#floatwait').append(
+                    `<select class="form-select" id="floatingSelect" aria-label="Floating label select example" multiple aria-label="multiple select example" style="height:400px" name='seats'></select>`
+                )
+                let seats = data['seats']
+                let bookedseats = data['bookedseats']
+                if (seats.length == 0) {
+                    $('#floatingSelect').append(`<option value="" disabled>No Seats Available</option>`)
+                } else {
+                    available_seats(seats, bookedseats)
+                }
+            });
+    }
+</script>
+<script>
+    function available_seats(seats, bookedseats) {
+        const display_seats = []
+        for (let b of bookedseats) {
+            for (let s of seats) {
+                if (s.id == b.seat) {
+                    let index = seats.indexOf(s)
+                    seats.splice(index, 1)
+                }
+            }
+        }
+        if (seats.length == 0) {
+            $('#floatingSelect').append(`<option value="" disabled>No Seats Available</option>`)
+        } else {
+            for (let s of seats) {
+                $('#floatingSelect').append(`<option value="${s.seatno}">${s.seatno}</option>`)
+            }
+        }
+    }
+</script>
+{% endblock body %}

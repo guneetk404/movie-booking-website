@@ -1,0 +1,92 @@
+{% extends "bookingapp/base.html" %}
+{% load static %}
+{% block headstyle %}
+<!-- bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+{% endblock headstyle %}
+{% block link3 %}active{% endblock link3 %}
+{% block body %}
+
+<!---  image slider -->
+
+<section class="crouselsection">
+    <div class="carousel">
+        <div class="slides">
+            <img src="{% static 'bookingapp/images/slideshow1.jpg' %}" alt="slide image" class="slide">
+            <img src="{% static 'bookingapp/images/slideshow2.jpg' %}" alt="slide image" class="slide">
+            <img src="{% static 'bookingapp/images/slideshow3.jpg' %}" alt="slide image" class="slide">
+
+        </div>
+        <div class="controls">
+            <div class="control prev-slide">&#9668;</div>
+            <div class="control next-slide">&#9658;</div>
+        </div>
+    </div>
+</section>
+<!-- image slider ends -->
+
+<!--- top films -->
+<div class="topFilms">
+    <h1>Current movies at Cinema</h1>
+    {% if movies %}
+    <div class="topFilms__container">
+        {% for movie in movies %}
+        <div class="topFilms__card" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%,
+        rgba(17, 17, 17, 0.6) 100%), url('/media/{{movie.image}}')">
+            <h2>{{movie.title}}</h2>
+            <button> <a href="/movie_detail/{{movie.id}}">Book Now</a></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<nav aria-label="Page navigation example" class="pagination-style">
+    <ul class="pagination justify-content-center">
+        {% if movies.has_previous %}
+        <li class="page-item first">
+            <a class="page-link " href="?page=1" tabindex="-1" aria-disabled="true">First</a>
+        </li>
+        <li class="page-item first">
+            <a class="page-link" href="?page={{ movies.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled first">
+            <a class="page-link" tabindex="-1" aria-disabled="true">First</a>
+        </li>
+        <li class="page-item disabled first">
+            <a class="page-link" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item"><a class="page-link"><span class="current">
+                    Page {{ movies.number }} of {{ movies.paginator.num_pages }}.
+                </span></a></li>
+        {% if movies.has_next %}
+        <li class="page-item last">
+            <a class="page-link" href="?page={{ movies.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item last">
+            <a class="page-link " href="?page={{ movies.paginator.num_pages }}">Last</a>
+        </li>
+        {% else %}
+        <li class="page-item last disabled">
+            <a class="page-link" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item last disabled">
+            <a class="page-link">Last</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<!-- top flim ends -->
+{% endblock body %}
